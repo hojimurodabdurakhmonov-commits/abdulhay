@@ -1,0 +1,965 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>Abdulhay</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+/* ===== iOS dizayn tizimi: tizim ranglari (HIG) ===== */
+:root{--font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Arial,sans-serif;--display:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",Arial,sans-serif;--rounded:ui-rounded,"SF Pro Rounded",-apple-system,BlinkMacSystemFont,sans-serif}
+[data-base=light]{--bg:#F2F2F7;--card:#FFFFFF;--card2:#FFFFFF;--fill:rgba(118,118,128,.12);--label:#000000;--label2:rgba(60,60,67,.6);--label3:rgba(60,60,67,.3);--sep:rgba(60,60,67,.29);--blue:#007AFF;--green:#34C759;--red:#FF3B30;--orange:#FF9500;--indigo:#5856D6;--teal:#30B0C7;--purple:#AF52DE;--pink:#FF2D55;--yellow:#FFCC00;--gray:#8E8E93;--accent:var(--blue);--on-accent:#FFFFFF;--tabbar:rgba(249,249,249,.94);--seg-on:#FFFFFF;--seg-shadow:0 3px 8px rgba(0,0,0,.12),0 3px 1px rgba(0,0,0,.04);--sheet:#F2F2F7}
+[data-base=dark]{--bg:#000000;--card:#1C1C1E;--card2:#2C2C2E;--fill:rgba(118,118,128,.24);--label:#FFFFFF;--label2:rgba(235,235,245,.6);--label3:rgba(235,235,245,.3);--sep:rgba(84,84,88,.65);--blue:#0A84FF;--green:#30D158;--red:#FF453A;--orange:#FF9F0A;--indigo:#5E5CE6;--teal:#40C8E0;--purple:#BF5AF2;--pink:#FF375F;--yellow:#FFD60A;--gray:#8E8E93;--accent:var(--blue);--on-accent:#FFFFFF;--tabbar:rgba(18,18,18,.9);--seg-on:#636366;--seg-shadow:none;--sheet:#1C1C1E}
+/* TZ'dagi uslublar — iOS asosida, faqat fon va aksent o'zgaradi */
+[data-theme=navy]{--bg:#0D1B2A;--card:#15283C;--card2:#1D3349;--sheet:#15283C;--accent:#E3A63C;--on-accent:#1A1206;--tabbar:rgba(13,27,42,.9)}
+[data-theme=forest]{--bg:#1E2D2F;--card:#26393B;--card2:#2F4547;--sheet:#26393B;--accent:#4CAF82;--on-accent:#06180F;--tabbar:rgba(30,45,47,.9)}
+[data-theme=najot]{--bg:#F7F1F4;--sheet:#F7F1F4;--accent:#930443;--tabbar:rgba(247,241,244,.94)}
+[data-theme=sand]{--bg:#FAF7F2;--sheet:#FAF7F2;--accent:#8B5E3C;--tabbar:rgba(250,247,242,.94)}
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--label);font:17px/22px var(--font);letter-spacing:-.41px;-webkit-font-smoothing:antialiased;padding:0 16px calc(env(safe-area-inset-bottom) + 96px);min-height:100vh}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;letter-spacing:inherit}
+input,select,textarea{font:inherit;color:var(--label);letter-spacing:inherit}
+svg{display:block}
+.ico{fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+
+/* Navigatsiya: katta sarlavha */
+.nav{padding-top:calc(env(safe-area-inset-top) + 4px)}
+.navbar{display:flex;justify-content:flex-end;align-items:center;gap:14px;height:44px}
+.nbtn{color:var(--accent);display:flex;align-items:center;gap:4px;height:44px;font-size:17px}
+.nbtn svg{width:25px;height:25px}
+h1{font:700 34px/41px var(--display);letter-spacing:.37px;margin:0}
+.sub{font-size:15px;line-height:20px;letter-spacing:-.24px;color:var(--label2);margin-top:2px;display:flex;align-items:center;gap:6px}
+.sync{width:7px;height:7px;border-radius:50%;background:var(--label3);display:inline-block}
+.sync.ok{background:var(--green)}.sync.err{background:var(--red)}.sync.load{background:var(--orange)}
+
+/* Bo'lim sarlavhasi / izoh */
+.sh{display:flex;justify-content:space-between;align-items:flex-end;margin:26px 16px 7px;font-size:13px;line-height:18px;letter-spacing:-.08px;color:var(--label2);text-transform:uppercase}
+.sh button{color:var(--accent);font-size:15px;text-transform:none;letter-spacing:-.24px}
+.sh.big{text-transform:none;font:700 22px/28px var(--display);letter-spacing:.35px;color:var(--label);margin:26px 0 8px}
+.ft{font-size:13px;line-height:18px;letter-spacing:-.08px;color:var(--label2);margin:7px 16px 0}
+
+/* Inset grouped ro'yxat */
+.group{background:var(--card);border-radius:10px;overflow:hidden}
+.cell{position:relative;display:flex;align-items:center;gap:12px;min-height:44px;padding:11px 16px;width:100%;text-align:left}
+.cell+.cell::before{content:"";position:absolute;top:0;right:0;left:var(--inset,16px);border-top:1px solid var(--sep);transform:scaleY(.5);transform-origin:top}
+.group.ic .cell{--inset:58px}
+.group.ck .cell{--inset:52px}
+.grow{flex:1;min-width:0}
+.cv{color:var(--label2);text-align:right;white-space:nowrap}
+.chev{width:9px;height:15px;color:var(--label3);flex:none;stroke-width:2.6}
+.t1{overflow-wrap:anywhere}
+.t2{font-size:13px;line-height:18px;letter-spacing:-.08px;color:var(--label2);margin-top:2px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.cell.done .t1{color:var(--label2)}
+.cell.add{color:var(--accent)}
+.cell.danger{color:var(--red);justify-content:center}
+.cell.center{justify-content:center;color:var(--accent)}
+.cell:active:not(:has(input,select,textarea)){background:var(--fill)}
+.isq{width:30px;height:30px;border-radius:7px;display:grid;place-items:center;color:#fff;flex:none;font-size:16px}
+.isq svg{width:18px;height:18px}
+.empty{color:var(--label2);text-align:center;padding:22px 16px;font-size:15px;letter-spacing:-.24px}
+.sel{position:relative}
+.sel select{position:absolute;inset:0;opacity:0;width:100%;height:100%;-webkit-appearance:none;appearance:none}
+
+/* Eslatmalar (Reminders) uslubidagi belgi */
+.chk{width:24px;height:24px;border-radius:50%;border:1.6px solid var(--label3);flex:none;display:grid;place-items:center;transition:border-color .15s}
+.chk.on{border-color:var(--accent)}
+.chk.on::after{content:"";width:15px;height:15px;border-radius:50%;background:var(--accent)}
+.chk.g.on{border-color:var(--green);background:var(--green)}
+.chk.g.on::after{width:6px;height:11px;border-radius:0;background:none;border:solid #fff;border-width:0 2.2px 2.2px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.chk:active{transform:scale(.88)}
+.flag{color:var(--orange);font-weight:600}
+.pri{color:var(--red);font-weight:700;letter-spacing:-1px}
+.late{color:var(--red)}
+.minus{width:22px;height:22px;border-radius:50%;background:var(--red);flex:none;position:relative}
+.minus::after{content:"";position:absolute;left:5px;right:5px;top:10px;height:2px;background:#fff;border-radius:1px}
+
+/* Widgetlar (Health uslubi) */
+.wgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.w{background:var(--card);border-radius:12px;padding:11px 14px 13px;text-align:left;display:block;width:100%}
+.wl{display:flex;align-items:center;gap:5px;font-size:15px;font-weight:600;letter-spacing:-.24px}
+.wl svg{width:16px;height:16px}
+.wv{font:700 28px/34px var(--rounded);letter-spacing:.36px;margin-top:6px;white-space:nowrap}
+.wv small{font:600 15px var(--font);letter-spacing:-.24px;color:var(--label2);margin-left:3px}
+.bar{height:4px;border-radius:2px;background:var(--fill);margin-top:8px;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:2px;background:var(--accent);transition:width .3s}
+
+/* Abdulhay xabari (bildirishnoma uslubi) */
+.bubble{background:var(--card);border-radius:14px;padding:11px 14px 13px;margin-top:10px}
+.bh{display:flex;align-items:center;gap:7px;font-size:13px;line-height:18px;letter-spacing:-.08px;color:var(--label2);margin-bottom:5px}
+.bh .nm{text-transform:uppercase;flex:1}
+.av{width:20px;height:20px;border-radius:5px;background:var(--accent);color:var(--on-accent);font:700 12px var(--rounded);display:grid;place-items:center}
+.bubble .m{font-size:15px;line-height:20px;letter-spacing:-.24px}
+.bubble .m b{color:var(--accent);font-weight:600}
+
+/* Boshqaruv elementlari */
+.seg{display:flex;background:var(--fill);border-radius:9px;padding:2px;height:32px;gap:0}
+.seg button{flex:1;border-radius:7px;font-size:13px;font-weight:500;letter-spacing:-.08px;transition:background .2s}
+.seg button.on{background:var(--seg-on);box-shadow:var(--seg-shadow);font-weight:600}
+.sw{-webkit-appearance:none;appearance:none;width:51px;height:31px;border-radius:16px;background:var(--fill);position:relative;flex:none;margin:0;transition:background .2s;cursor:pointer}
+.sw::after{content:"";position:absolute;top:2px;left:2px;width:27px;height:27px;border-radius:50%;background:#fff;box-shadow:0 3px 8px rgba(0,0,0,.15),0 3px 1px rgba(0,0,0,.06);transition:transform .22s cubic-bezier(.3,.7,.4,1.3)}
+.sw:checked{background:var(--green)}
+.sw:checked::after{transform:translateX(20px)}
+.stepper{display:flex;background:var(--fill);border-radius:8px;height:32px;flex:none}
+.stepper button{width:46px;font-size:22px;line-height:1;color:var(--label)}
+.stepper button+button{border-left:1px solid var(--sep)}
+.btn{display:block;width:100%;height:50px;border-radius:12px;background:var(--accent);color:var(--on-accent);font-size:17px;font-weight:600}
+.btn.tint{background:var(--fill);color:var(--accent)}
+.btn:active,.w:active,.rb:active{opacity:.7}
+.pill{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 14px;border-radius:17px;background:var(--fill);color:var(--accent);font-size:15px;font-weight:600;letter-spacing:-.24px}
+.pill svg{width:16px;height:16px}
+.in{border:0;background:none;outline:none;width:100%;padding:0;color:var(--label);-webkit-appearance:none;appearance:none}
+textarea.in{min-height:66px;resize:none;line-height:22px}
+.in::placeholder{color:var(--label3)}
+.cell input[type=date],.cell input[type=time],.cell input.num{background:var(--fill);border:0;border-radius:6px;padding:6px 11px;font-size:17px;color:var(--label);-webkit-appearance:none;appearance:none;min-height:34px;outline:none}
+.cell input.num{width:70px;text-align:center}
+
+/* Tab bar */
+.tabs{position:fixed;left:0;right:0;bottom:0;display:flex;background:var(--tabbar);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);padding:6px 0 calc(env(safe-area-inset-bottom) + 4px);z-index:5}
+.tabs::before{content:"";position:absolute;top:0;left:0;right:0;border-top:1px solid var(--sep);transform:scaleY(.5);transform-origin:top}
+.tabs button{flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;font-size:10px;line-height:12px;font-weight:500;letter-spacing:.1px;color:var(--gray)}
+.tabs svg{width:27px;height:27px}
+.tabs .on{color:var(--accent)}
+.tabs .on .ico{stroke-width:2.2}
+
+/* Sheet (iOS page sheet) */
+.sheet-wrap{position:fixed;inset:0;z-index:10;pointer-events:none}
+.sheet-bg{position:absolute;inset:0;background:rgba(0,0,0,.4);opacity:0;transition:opacity .3s}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:var(--sheet);border-radius:12px 12px 0 0;padding:0 16px calc(env(safe-area-inset-bottom) + 24px);max-height:92vh;overflow:auto;transform:translateY(100%);transition:transform .38s cubic-bezier(.32,.72,0,1)}
+.sheet-wrap.open{pointer-events:auto}
+.sheet-wrap.open .sheet-bg{opacity:1}
+.sheet-wrap.open .sheet{transform:none}
+.shead{position:sticky;top:0;z-index:2;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:56px;margin:0 -16px;padding:5px 16px 0;background:var(--sheet)}
+.shead::before{content:"";position:absolute;top:5px;left:50%;width:36px;height:5px;margin-left:-18px;border-radius:3px;background:var(--label3)}
+.shead b{font-size:17px;font-weight:600}
+.shead button{color:var(--accent);justify-self:start}
+.shead button.ok{justify-self:end;font-weight:600}
+.shead button:disabled{color:var(--label3)}
+#toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top) + 10px);transform:translate(-50%,-120%);background:var(--card2);color:var(--label);box-shadow:0 8px 30px rgba(0,0,0,.18);padding:11px 18px;border-radius:22px;font-size:15px;font-weight:500;letter-spacing:-.24px;transition:transform .35s cubic-bezier(.32,.72,0,1),visibility .35s;z-index:40;max-width:90vw;text-align:center;visibility:hidden}
+#toast.show{transform:translate(-50%,0);visibility:visible}
+
+/* Namoz */
+.hero{background:var(--card);border-radius:12px;padding:14px 16px;margin-top:12px;display:flex;justify-content:space-between;align-items:flex-end}
+.hero .k{font-size:13px;color:var(--label2);letter-spacing:-.08px}
+.hero .n{font:600 22px/28px var(--display);margin-top:2px}
+.hero .tm{font:700 34px/38px var(--rounded);color:var(--accent);text-align:right}
+.hero .lf{font-size:13px;color:var(--label2);text-align:right;letter-spacing:-.08px}
+.ngrid{display:grid;grid-template-columns:58px repeat(7,1fr);gap:5px;align-items:center;font-size:12px;padding:14px 16px}
+.ngrid .h{text-align:center;color:var(--label2);font-size:11px;line-height:14px}
+.ngrid .h.today{color:var(--accent);font-weight:600}
+.ngrid .nm{color:var(--label2);font-size:13px}
+.ngrid .c{height:26px;border-radius:7px;background:var(--fill)}
+.ngrid .c.on{background:var(--green)}
+.dots{display:flex;gap:4px;margin-top:7px}
+.dot{width:22px;height:22px;border-radius:6px;background:var(--fill);font-size:9px;font-weight:600;color:var(--label2);display:grid;place-items:center}
+.dot.on{background:var(--green);color:#fff}
+.dot.today{box-shadow:0 0 0 1.5px var(--card),0 0 0 3px var(--accent)}
+.badge{font-size:12px;font-weight:600;color:var(--orange)}
+
+/* ===== Zen Flip Clock ===== */
+.fc{--ch:min(39vw,200px);--cw:calc(var(--ch)*1.04);--cr:calc(var(--ch)*.085);--gap:var(--bg);display:flex;align-items:center;justify-content:center;gap:calc(var(--ch)*.07);margin-top:18px}
+.fcard{position:relative;width:var(--cw);height:var(--ch);perspective:calc(var(--ch)*5);font:600 calc(var(--ch)*.66) var(--display);letter-spacing:-.04em;color:#ECECEE;font-variant-numeric:tabular-nums;filter:drop-shadow(0 6px 14px rgba(0,0,0,.22))}
+.fcard .h{position:absolute;left:0;right:0;height:50%;overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.fcard .up{top:0;border-radius:var(--cr) var(--cr) 0 0;background:linear-gradient(#2B2B2E,#232326);transform-origin:50% 100%}
+.fcard .dn{bottom:0;border-radius:0 0 var(--cr) var(--cr);background:linear-gradient(#1E1E21,#19191B);transform-origin:50% 0}
+.fcard b{position:absolute;left:0;right:0;height:var(--ch);line-height:var(--ch);text-align:center;font-weight:inherit}
+.fcard .up b{top:0}
+.fcard .dn b{bottom:0}
+.fcard::after{content:"";position:absolute;left:0;right:0;top:50%;height:calc(var(--ch)*.016);min-height:2px;transform:translateY(-50%);background:var(--gap);z-index:6}
+.fcard .fold{z-index:4;animation:fold .26s cubic-bezier(.55,0,.9,.5) forwards}
+.fcard .unfold{z-index:4;transform:rotateX(90deg);animation:unfold .26s cubic-bezier(.1,.5,.45,1) .24s forwards}
+.fcard .fold::after,.fcard .unfold::after{content:"";position:absolute;inset:0;background:#000;opacity:0;animation:shade .26s forwards}
+.fcard .unfold::after{opacity:.35;animation:unshade .26s .24s forwards}
+@keyframes fold{to{transform:rotateX(-90deg)}}
+@keyframes unfold{to{transform:rotateX(0deg)}}
+@keyframes shade{to{opacity:.35}}
+@keyframes unshade{to{opacity:0}}
+.fcolon{display:flex;flex-direction:column;gap:calc(var(--ch)*.24)}
+.fcolon i{width:calc(var(--ch)*.065);height:calc(var(--ch)*.065);border-radius:50%;background:var(--label3)}
+.flab{text-align:center;margin-top:16px;font-size:15px;letter-spacing:-.24px;color:var(--label2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 20px}
+.fprog{height:3px;border-radius:2px;background:var(--fill);margin:12px auto 0;max-width:280px;overflow:hidden}
+.fprog i{display:block;height:100%;background:var(--accent);transition:width .25s linear}
+.rbtns{display:grid;grid-template-columns:84px 1fr 84px;align-items:center;margin:24px 0 0}
+.rb{width:84px;height:84px;border-radius:50%;display:grid;place-items:center;font-size:16px;font-weight:500;letter-spacing:-.3px;position:relative}
+.rb::before{content:"";position:absolute;inset:3px;border-radius:50%;border:2px solid var(--bg)}
+.rb.gray{background:var(--fill);color:var(--label)}
+.rb.green{background:color-mix(in srgb,var(--green) 22%,var(--bg));color:var(--green)}
+.rb.orange{background:color-mix(in srgb,var(--orange) 22%,var(--bg));color:var(--orange)}
+.rb:disabled{opacity:.4}
+.rbtns .mid{justify-self:center}
+
+.zen{position:fixed;inset:0;z-index:30;background:#000;display:none;flex-direction:column;align-items:center;justify-content:center;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);color:#fff;user-select:none;-webkit-user-select:none}
+.zen.open{display:flex}
+.zen .fc{--ch:min(40vw,60vh);--gap:#000;margin:0}
+.zen .fcolon i{background:#3A3A3C}
+.zen .zlab{margin-top:4vh;font-size:15px;color:rgba(235,235,245,.45);letter-spacing:-.24px;max-width:80vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.zen .zbar{position:absolute;left:0;right:0;bottom:0;height:2px;background:rgba(255,255,255,.06)}
+.zen .zbar i{display:block;height:100%;background:rgba(255,255,255,.28);transition:width .25s linear}
+.zen .zctl{position:absolute;left:0;right:0;bottom:calc(env(safe-area-inset-bottom) + 28px);display:flex;justify-content:center;gap:14px;opacity:0;transform:translateY(10px);transition:opacity .3s,transform .3s;pointer-events:none}
+.zen.ctl .zctl{opacity:1;transform:none;pointer-events:auto}
+.zen .zctl button{height:44px;padding:0 20px;border-radius:22px;background:rgba(118,118,128,.28);color:#fff;font-size:15px;font-weight:600;-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px)}
+.zen .zhint{position:absolute;top:calc(env(safe-area-inset-top) + 16px);font-size:13px;color:rgba(235,235,245,.3);opacity:0;transition:opacity .3s}
+.zen.ctl .zhint{opacity:1}
+@media (orientation:portrait){
+  .zen .fc{flex-direction:column;--ch:min(64vw,36vh);gap:calc(var(--ch)*.1)}
+  .zen .fcolon{display:none}
+}
+@media (prefers-reduced-motion:reduce){.fcard .fold,.fcard .unfold{animation-duration:.01s;animation-delay:0s}}
+</style>
+</head>
+<body data-base="light" data-theme="auto">
+<main id="view"></main>
+<nav class="tabs" id="tabs"></nav>
+<div id="sheet" class="sheet-wrap"><div class="sheet-bg" data-act="close"></div><div class="sheet" id="sheetBody"></div></div>
+<div id="zen" class="zen" data-act="zentap">
+  <div class="zhint">Bosib boshqaring</div>
+  <div class="fc"><div class="fcard" id="zM"></div><div class="fcolon"><i></i><i></i></div><div class="fcard" id="zS"></div></div>
+  <div class="zlab" id="zLab"></div>
+  <div class="zctl" id="zCtl"></div>
+  <div class="zbar"><i id="zBar"></i></div>
+</div>
+<div id="toast"></div>
+
+<script>
+'use strict';
+/* ================= Telegram ================= */
+const tg = window.Telegram && window.Telegram.WebApp;
+const inTG = !!(tg && tg.initData);
+const ver = v => inTG && tg.isVersionAtLeast && tg.isVersionAtLeast(v);
+const CS = ver('6.9') && tg.CloudStorage ? tg.CloudStorage : null;
+function hap(t){ try{ if(ver('6.1')) tg.HapticFeedback.impactOccurred(t||'light'); }catch(e){} }
+function hapN(t){ try{ if(ver('6.1')) tg.HapticFeedback.notificationOccurred(t||'success'); }catch(e){} }
+function hapS(){ try{ if(ver('6.1')) tg.HapticFeedback.selectionChanged(); }catch(e){} }
+function ask(msg){ return new Promise(r => ver('6.2') ? tg.showConfirm(msg, ok => r(ok)) : r(confirm(msg))); }
+if (tg) { try{ tg.ready(); tg.expand(); if(ver('7.7')) tg.disableVerticalSwipes(); }catch(e){} }
+
+/* ================= Ikonkalar (SF Symbols uslubida) ================= */
+const P_ = {
+  home:'<path d="M3.5 10.2 12 3.5l8.5 6.7V20a1 1 0 0 1-1 1H15v-6.2H9V21H4.5a1 1 0 0 1-1-1z"/>',
+  list:'<circle cx="4.6" cy="6" r="1.2"/><circle cx="4.6" cy="12" r="1.2"/><circle cx="4.6" cy="18" r="1.2"/><path d="M9 6h11.5M9 12h11.5M9 18h11.5"/>',
+  check:'<circle cx="12" cy="12" r="9"/><path d="m8 12.4 2.7 2.7L16.3 9.4"/>',
+  moon:'<path d="M20.2 14.6A8.6 8.6 0 0 1 9.4 3.8a8.6 8.6 0 1 0 10.8 10.8z"/>',
+  timer:'<circle cx="12" cy="13.2" r="8"/><path d="M12 9v4.4l2.7 2.2M9.6 2.6h4.8"/>',
+  gear:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
+  plus:'<path d="M12 4.5v15M4.5 12h15"/>',
+  chev:'<path d="m2 2 6 6.5L2 15"/>',
+  flame:'<path d="M12 21.5c3.9 0 6.8-2.6 6.8-6.4 0-3.4-2.3-5.6-3.8-8-.6 1.9-1.6 3-2.9 3.5.3-3-.9-5.9-3.4-8.1.3 3.3-3.5 6.1-3.5 11 0 4.6 3 8 6.8 8z"/>',
+  chart:'<path d="M5 20v-7M10 20V9M15 20v-4M20 20V5"/>',
+  calendar:'<rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/>',
+  play:'<path d="M7 4.5v15l12-7.5z" fill="currentColor" stroke="none"/>',
+  bed:'<path d="M20.2 14.6A8.6 8.6 0 0 1 9.4 3.8a8.6 8.6 0 1 0 10.8 10.8z"/>',
+  expand:'<path d="M4 9.5V4h5.5M20 9.5V4h-5.5M4 14.5V20h5.5M20 14.5V20h-5.5"/>',
+  flag:'<path d="M5.5 21V4.5m0 0h11l-2.2 4 2.2 4h-11"/>',
+};
+const ic = (n, cls='') => `<svg class="ico ${cls}" viewBox="0 0 24 24">${P_[n]}</svg>`;
+const chev = `<svg class="ico chev" viewBox="0 0 10 17">${P_.chev}</svg>`;
+
+/* ================= Sanalar ================= */
+const pad = n => String(n).padStart(2,'0');
+const ymd = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const parse = s => { const [y,m,d] = s.split('-').map(Number); return new Date(y,m-1,d); };
+const addDays = (s,n) => { const d = parse(s); d.setDate(d.getDate()+n); return ymd(d); };
+const today = () => ymd(new Date());
+const weekStart = s => { const d = parse(s); d.setDate(d.getDate() - (d.getDay()+6)%7); return ymd(d); };
+const dayDiff = (a,b) => Math.round((parse(b)-parse(a))/864e5);
+const WD = ['Yakshanba','Dushanba','Seshanba','Chorshanba','Payshanba','Juma','Shanba'];
+const WD2 = ['Ya','Du','Se','Ch','Pa','Ju','Sh'];
+const MON = ['yanvar','fevral','mart','aprel','may','iyun','iyul','avgust','sentyabr','oktyabr','noyabr','dekabr'];
+const fmtDate = s => { const d = parse(s); return `${d.getDate()}-${MON[d.getMonth()]}, ${WD[d.getDay()]}`; };
+const fmtShort = s => { const d = parse(s); return `${d.getDate()}-${MON[d.getMonth()].slice(0,3)}`; };
+const fmtMin = m => m >= 60 ? `${Math.floor(m/60)} s ${m%60 ? m%60+' daq' : ''}`.trim() : `${m} daq`;
+const nowHM = () => { const d = new Date(); return d.getHours()*60 + d.getMinutes(); };
+const hm2m = s => { const [h,m] = s.split(':').map(Number); return h*60+m; };
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,6);
+
+/* ================= Holat (state) ================= */
+const DEF_HABITS = [
+  {id:'yotish',   t:'Erta yotish (22:15 gacha)',  ic:'🌙', k:'d'},
+  {id:'uygonish', t:"Erta uyg'onish (04:50)",     ic:'⏰', k:'d'},
+  {id:'top3',     t:'3 ta asosiy ishni yozish',   ic:'✍️', k:'d'},
+  {id:'ingliz',   t:'Ingliz tili (40–50 daq)',    ic:'🇬🇧', k:'d'},
+  {id:'sport',    t:'Sport (20–30 daq)',          ic:'💪', k:'d'},
+  {id:'jurnal',   t:'Kunlik jurnal / xulosa',     ic:'📓', k:'d'},
+  {id:'ai',       t:'AI / Automation amaliyoti',  ic:'🤖', k:'w', tg:2},
+  {id:'blog',     t:'Blog yozish',                ic:'📝', k:'w', tg:2},
+  {id:'kitob',    t:"Kitob / kurs o'qish",        ic:'📚', k:'w', tg:3},
+];
+const fresh = () => ({ v:2, u:0,
+  settings:{ theme:'auto', mur:"Og'a", flen:25, blen:5, city:'Namangan', sound:true },
+  tasks:[], habits:DEF_HABITS.map(h => ({...h})), hlog:{}, namoz:{}, focus:[], jr:{}, timer:null });
+const migrate = s => { const f = fresh(); return {...f, ...s, settings:{...f.settings, ...(s.settings||{})}}; };
+
+const LS = 'abdulhay_v1';
+let S;
+try { S = migrate(JSON.parse(localStorage.getItem(LS)) || fresh()); } catch(e) { S = fresh(); }
+
+/* ---- Telegram CloudStorage: holat 3800 belgilik ASCII bo'laklarga bo'linib saqlanadi ---- */
+const CH = 3800;
+const csGet = keys => new Promise((res,rej) => CS.getItems(keys, (e,v) => e ? rej(e) : res(v)));
+const csSet = (k,v) => new Promise((res,rej) => CS.setItem(k, v, (e,ok) => e ? rej(e) : res(ok)));
+const csDel = keys => new Promise(res => CS.removeItems(keys, () => res()));
+const asciiJSON = o => JSON.stringify(o).replace(/[\u007f-￿]/g, c => '\\u' + c.charCodeAt(0).toString(16).padStart(4,'0'));
+let lastChunks = [], saveT = null, saving = false, again = false, syncSt = '';
+
+function setSync(st){ syncSt = st; const el = document.getElementById('sync'); if (el) el.className = 'sync ' + st; }
+function save(){
+  S.u = Date.now();
+  try { localStorage.setItem(LS, JSON.stringify(S)); } catch(e) {}
+  clearTimeout(saveT); saveT = setTimeout(cloudSave, 700);
+}
+async function cloudSave(){
+  if (!CS) return;
+  if (saving) { again = true; return; }
+  saving = true; prune();
+  const str = asciiJSON(S), chunks = [];
+  for (let i = 0; i < str.length; i += CH) chunks.push(str.slice(i, i+CH));
+  try {
+    for (let i = 0; i < chunks.length; i++) if (chunks[i] !== lastChunks[i]) await csSet('c'+i, chunks[i]);
+    await csSet('meta', JSON.stringify({n:chunks.length, u:S.u}));
+    if (lastChunks.length > chunks.length) {
+      const extra = []; for (let i = chunks.length; i < lastChunks.length; i++) extra.push('c'+i);
+      await csDel(extra);
+    }
+    lastChunks = chunks; setSync('ok');
+  } catch(e) { setSync('err'); }
+  saving = false;
+  if (again) { again = false; cloudSave(); }
+}
+async function cloudLoad(){
+  const m = await csGet(['meta']);
+  if (!m.meta) return null;
+  const meta = JSON.parse(m.meta), keys = [];
+  for (let i = 0; i < meta.n; i++) keys.push('c'+i);
+  const v = {};
+  for (let i = 0; i < keys.length; i += 50) Object.assign(v, await csGet(keys.slice(i, i+50)));
+  const chunks = keys.map(k => v[k] || '');
+  const s = JSON.parse(chunks.join(''));
+  lastChunks = chunks;
+  return s;
+}
+function prune(){
+  const t = today(), c60 = addDays(t,-60), c400 = addDays(t,-400), c180 = Date.now() - 180*864e5;
+  S.tasks = S.tasks.filter(x => x.s === 'p' || x.d >= c60);
+  for (const o of [S.hlog, S.namoz, S.jr]) for (const k in o) if (k < c400) delete o[k];
+  S.focus = S.focus.filter(f => f.ts > c180);
+}
+
+/* ================= Murojaat ================= */
+function tgName(){ try { return tg.initDataUnsafe.user.first_name || ''; } catch(e) { return ''; } }
+function addr(){ const m = S.settings.mur; if (m === 'Neytral') return ''; if (m === 'Ism') return tgName() || ''; return m; }
+const say = txt => { const a = addr(); return a ? `${a}, ${txt}` : txt.charAt(0).toUpperCase() + txt.slice(1); };
+
+/* ================= Vazifalar ================= */
+const PRI = {1:['Yuqori','!!!'], 2:["O'rta",'!!'], 3:['Past','!']};
+function todayTasks(){ const t = today(); return S.tasks.filter(x => x.d === t ? x.s !== 'x' : (x.s === 'p' && x.d < t)); }
+const sortT = (a,b) => (a.s==='d') - (b.s==='d') || (b.top|0) - (a.top|0) || a.p - b.p || (a.tm||'99').localeCompare(b.tm||'99');
+function toggleTask(id){
+  const x = S.tasks.find(t => t.id === id); if (!x) return;
+  if (x.s === 'd') { x.s = 'p'; delete x.dn; hapS(); }
+  else { x.s = 'd'; x.dn = today(); if (x.d < today()) x.d = today(); hapN('success'); }
+  save(); render();
+}
+
+/* ================= Habitlar ================= */
+const hdone = (d,id) => (S.hlog[d] || []).includes(id);
+function toggleHabit(id, d){
+  d = d || today();
+  const a = S.hlog[d] || (S.hlog[d] = []); const i = a.indexOf(id);
+  i < 0 ? (a.push(id), hap('light')) : (a.splice(i,1), hapS());
+  if (!a.length) delete S.hlog[d];
+  save(); render();
+}
+function streakBy(ok){ let d = today(); if (!ok(d)) d = addDays(d,-1); let n = 0; while (ok(d) && n < 3000) { n++; d = addDays(d,-1); } return n; }
+function bestStreak(id){
+  const days = Object.keys(S.hlog).filter(k => S.hlog[k].includes(id)).sort();
+  let best = 0, cur = 0, prev = null;
+  for (const d of days) { cur = prev && addDays(prev,1) === d ? cur+1 : 1; best = Math.max(best,cur); prev = d; }
+  return best;
+}
+function weekCount(id, ws){ ws = ws || weekStart(today()); let n = 0; for (let i = 0; i < 7; i++) if (hdone(addDays(ws,i), id)) n++; return n; }
+function wStreak(h){
+  let ws = weekStart(today()), n = 0;
+  if (weekCount(h.id, ws) >= h.tg) n++;
+  ws = addDays(ws,-7);
+  while (weekCount(h.id, ws) >= h.tg && n < 500) { n++; ws = addDays(ws,-7); }
+  return n;
+}
+const dailyH = () => S.habits.filter(h => h.k === 'd');
+const weeklyH = () => S.habits.filter(h => h.k === 'w');
+function weekPct(){
+  const t = today(), ws = weekStart(t), days = dayDiff(ws,t) + 1; let done = 0, tot = 0;
+  for (const h of S.habits) {
+    if (h.k === 'd') { tot += days; for (let i = 0; i < days; i++) if (hdone(addDays(ws,i), h.id)) done++; }
+    else { tot += h.tg; done += Math.min(weekCount(h.id, ws), h.tg); }
+  }
+  return tot ? Math.round(done/tot*100) : 0;
+}
+
+/* ================= Namoz ================= */
+const NAMOZ = ['Bomdod','Peshin','Asr','Shom','Xufton'];
+const nmask = d => S.namoz[d] || 0;
+const ncount = d => { let m = nmask(d), c = 0; while (m) { c += m & 1; m >>= 1; } return c; };
+const ndone = (d,i) => !!(nmask(d) & (1<<i));
+function toggleNamoz(i, d){
+  d = d || today(); const m = nmask(d) ^ (1<<i);
+  m ? S.namoz[d] = m : delete S.namoz[d];
+  (m & (1<<i)) ? hapN('success') : hapS();
+  save(); render();
+}
+function namozPct(days){
+  const t = today(), first = Object.keys(S.namoz).sort()[0];
+  days = first ? Math.max(1, Math.min(days, dayDiff(first,t)+1)) : 1;
+  let c = 0; for (let i = 0; i < days; i++) c += ncount(addDays(t,-i)); return Math.round(c/(days*5)*100);
+}
+function namozWeekPct(){ const t = today(), ws = weekStart(t), n = dayDiff(ws,t)+1; let c = 0; for (let i = 0; i < n; i++) c += ncount(addDays(ws,i)); return Math.round(c/(n*5)*100); }
+
+const CITIES = {"Namangan":[40.9983,71.6726],"Toshkent":[41.2995,69.2401],"Andijon":[40.7821,72.3442],"Farg'ona":[40.3842,71.7843],"Qo'qon":[40.5286,70.9425],"Samarqand":[39.6542,66.9597],"Buxoro":[39.7681,64.4556],"Nukus":[42.4531,59.6103]};
+let PT = null;
+const okHM = s => /^\d{1,2}:\d{2}$/.test(s||'');
+async function loadTimes(){
+  const t = today(), city = S.settings.city, key = `pt_${city}_${t}`;
+  try {
+    for (let i = localStorage.length-1; i >= 0; i--) { const k = localStorage.key(i); if (k && k.startsWith('pt_') && k !== key) localStorage.removeItem(k); }
+    const c = localStorage.getItem(key); if (c) { PT = JSON.parse(c); return; }
+  } catch(e) {}
+  PT = null;
+  try {
+    const r = await fetch('https://islomapi.uz/api/present/day?region=' + encodeURIComponent(city));
+    if (!r.ok) throw 0;
+    const x = (await r.json()).times;
+    const arr = [x.tong_saharlik, x.peshin, x.asr, x.shom_iftor, x.hufton];
+    if (!arr.every(okHM)) throw 0;
+    PT = {src:'islomapi.uz', t:arr, sun:x.quyosh};
+  } catch(e) {
+    try {
+      const [la,lo] = CITIES[city] || CITIES.Namangan, d = parse(t);
+      const r = await fetch(`https://api.aladhan.com/v1/timings/${pad(d.getDate())}-${pad(d.getMonth()+1)}-${d.getFullYear()}?latitude=${la}&longitude=${lo}&method=3&school=1&timezonestring=Asia/Tashkent`);
+      const x = (await r.json()).data.timings;
+      PT = {src:'taxminiy', t:[x.Fajr,x.Dhuhr,x.Asr,x.Maghrib,x.Isha].map(s => s.slice(0,5)), sun:x.Sunrise.slice(0,5)};
+    } catch(e2) { PT = null; return; }
+  }
+  try { localStorage.setItem(key, JSON.stringify(PT)); } catch(e) {}
+  if (UI.tab === 'home' || UI.tab === 'namoz') render();
+}
+function nextPrayer(){
+  if (!PT) return null; const n = nowHM();
+  for (let i = 0; i < 5; i++) { const m = hm2m(PT.t[i]); if (m > n) return {i, time:PT.t[i], left:m-n}; }
+  return {i:0, time:PT.t[0], left:24*60 - n + hm2m(PT.t[0]), tomorrow:true};
+}
+const fmtLeft = m => m >= 60 ? `${Math.floor(m/60)} s ${m%60} daq` : `${m} daq`;
+
+/* ================= Focus ================= */
+const tElapsed = () => { const T = S.timer; return T ? T.acc + (T.start ? Date.now()-T.start : 0) : 0; };
+function logFocus(m, endTs){ S.focus.push({ts:endTs||Date.now(), m, t:S.timer.title, tid:S.timer.tid}); }
+function startTimer(mode, len, tid, title){
+  unlockAudio();
+  S.timer = {mode, len, start:Date.now(), acc:0, tid:tid||'', title:title||''};
+  UI.fdone = null; hap('medium'); closing(true); save(); render();
+}
+function pauseTimer(){ const T = S.timer; if (!T || !T.start) return; T.acc = tElapsed(); T.start = null; hap('light'); save(); render(); paintZen(); }
+function resumeTimer(){ const T = S.timer; if (!T || T.start) return; unlockAudio(); T.start = Date.now(); hap('light'); save(); render(); paintZen(); }
+function stopTimer(){
+  const T = S.timer, el = tElapsed();
+  if (T.mode === 'f' && el >= 60000) { const m = Math.round(el/60000); logFocus(m); toast(`${m} daq fokus saqlandi`); }
+  S.timer = null; closing(false); exitZen(); save(); render();
+}
+function completeTimer(){
+  const T = S.timer, over = tElapsed() - T.len*60000;
+  if (T.mode === 'f') { logFocus(T.len, Date.now() - Math.max(0,over)); UI.fdone = T.len; }
+  else { UI.fdone = null; toast('Tanaffus tugadi. Ishga qaytamiz.'); }
+  S.timer = null; closing(false); exitZen();
+  if (over < 5000) { hapN('success'); chime(); }
+  save(); render();
+}
+function closing(on){ try { if (ver('6.2')) on ? tg.enableClosingConfirmation() : tg.disableClosingConfirmation(); } catch(e) {} }
+const dayTs = s => parse(s).getTime();
+const fSum = (a,b) => S.focus.filter(f => f.ts >= a && f.ts < b).reduce((s,f) => s+f.m, 0);
+function fToday(){ const t = today(); return fSum(dayTs(t), dayTs(addDays(t,1))); }
+function fWeek(){ const t = today(); return fSum(dayTs(weekStart(t)), dayTs(addDays(t,1))); }
+function fMonth(){ const d = new Date(); return fSum(new Date(d.getFullYear(), d.getMonth(), 1).getTime(), dayTs(addDays(today(),1))); }
+
+/* ---- Ovoz: vaqt tugaganda yumshoq qo'ng'iroq ---- */
+let AC = null;
+function unlockAudio(){ try { AC = AC || new (window.AudioContext || window.webkitAudioContext)(); if (AC.state === 'suspended') AC.resume(); } catch(e) {} }
+function chime(){
+  if (!S.settings.sound || !AC) return;
+  try {
+    const t = AC.currentTime;
+    [[660,0],[880,.22],[1320,.44]].forEach(([f,dt]) => {
+      const o = AC.createOscillator(), g = AC.createGain();
+      o.type = 'sine'; o.frequency.value = f;
+      g.gain.setValueAtTime(0, t+dt); g.gain.linearRampToValueAtTime(.22, t+dt+.02); g.gain.exponentialRampToValueAtTime(.0008, t+dt+1.6);
+      o.connect(g); g.connect(AC.destination); o.start(t+dt); o.stop(t+dt+1.7);
+    });
+  } catch(e) {}
+}
+
+/* ---- Flip soat: har bir kartochka ikki raqamni ko'rsatadi ---- */
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+function setCard(el, v, animate){
+  if (!el) return;
+  const cur = el.dataset.v;
+  if (cur === v) return;
+  el.dataset.v = v;
+  if (cur == null || !animate || document.hidden || reduceMotion) {
+    el.innerHTML = `<div class="h up"><b>${v}</b></div><div class="h dn"><b>${v}</b></div>`;
+    return;
+  }
+  el.querySelectorAll('.fold,.unfold').forEach(n => n.remove());
+  el.querySelector('.up b').textContent = v;
+  el.querySelector('.dn b').textContent = cur;
+  const a = document.createElement('div'); a.className = 'h up fold'; a.innerHTML = `<b>${cur}</b>`;
+  const b = document.createElement('div'); b.className = 'h dn unfold'; b.innerHTML = `<b>${v}</b>`;
+  el.append(a, b);
+  b.addEventListener('animationend', e => {
+    if (e.target !== b) return;
+    const dn = el.querySelector('.dn:not(.unfold) b'); if (dn) dn.textContent = el.dataset.v;
+    a.remove(); b.remove();
+  });
+}
+function clockState(){
+  const T = S.timer, len = T ? T.len : (UI.flen || S.settings.flen), total = len*60000;
+  const rem = T ? Math.max(0, total - tElapsed()) : total;
+  const secs = Math.ceil(rem/1000);
+  let mm = Math.floor(secs/60), ss = secs % 60;
+  return {mm:pad(mm), ss:pad(ss), pct:T ? (1 - rem/total)*100 : 0,
+    label: T ? (T.mode === 'b' ? 'Tanaffus' : (T.start ? '' : 'Pauza · ') + (T.title || 'Fokus')) : (UI.fdone ? 'Bajarildi' : 'Tayyor')};
+}
+function paintClock(animate){
+  const c = clockState();
+  setCard($('fcM'), c.mm, animate); setCard($('fcS'), c.ss, animate);
+  const p = $('fProg'); if (p) p.style.width = c.pct + '%';
+  if (UI.zen) {
+    setCard($('zM'), c.mm, animate); setCard($('zS'), c.ss, animate);
+    $('zBar').style.width = c.pct + '%';
+    $('zLab').textContent = c.label;
+  }
+}
+
+/* ---- Zen rejim: to'liq ekran, ekran o'chmaydi ---- */
+let wake = null, zenT = null;
+async function enterZen(){
+  UI.zen = true; $('zM').removeAttribute('data-v'); $('zS').removeAttribute('data-v');
+  $('zen').classList.add('open'); paintClock(false); paintZen(); showZenCtl();
+  try { if (ver('8.0')) tg.requestFullscreen(); else if (!inTG && document.documentElement.requestFullscreen) await document.documentElement.requestFullscreen(); } catch(e) {}
+  try { if (navigator.wakeLock) wake = await navigator.wakeLock.request('screen'); } catch(e) {}
+  hap('medium');
+}
+function exitZen(){
+  if (!UI.zen) return;
+  UI.zen = false; $('zen').classList.remove('open','ctl');
+  try { if (ver('8.0') && tg.isFullscreen) tg.exitFullscreen(); else if (document.fullscreenElement) document.exitFullscreen(); } catch(e) {}
+  try { if (wake) { wake.release(); wake = null; } } catch(e) {}
+}
+function paintZen(){
+  if (!UI.zen) return; const T = S.timer;
+  $('zCtl').innerHTML = (T ? (T.start ? `<button data-act="fpause">Pauza</button>` : `<button data-act="fresume">Davom</button>`) + `<button data-act="fstop">To'xtatish</button>` : '') + `<button data-act="zenexit">Chiqish</button>`;
+}
+function showZenCtl(){ $('zen').classList.add('ctl'); clearTimeout(zenT); zenT = setTimeout(() => $('zen').classList.remove('ctl'), 3500); }
+document.addEventListener('visibilitychange', async () => {
+  if (!document.hidden && UI.zen && navigator.wakeLock && !wake) { try { wake = await navigator.wakeLock.request('screen'); } catch(e) {} }
+});
+
+/* ================= Intizom streak ================= */
+function dayOk(d){ const dh = dailyH(); const hd = dh.filter(h => hdone(d,h.id)).length; return ncount(d) === 5 && hd >= Math.ceil(dh.length/2); }
+
+/* ================= UI ================= */
+const UI = { tab:'home', tday:'today', hedit:false, flen:null, ftid:'', fdone:null, zen:false };
+try { UI.tab = localStorage.getItem('abdulhay_tab') || 'home'; } catch(e) {}
+const $ = id => document.getElementById(id);
+let toastT;
+function toast(m){ const el = $('toast'); el.textContent = m; el.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => el.classList.remove('show'), 2300); }
+function openSheet(html){ $('sheetBody').innerHTML = html; $('sheet').classList.add('open'); $('sheetBody').scrollTop = 0; }
+function closeSheet(){ $('sheet').classList.remove('open'); }
+const sheetHead = (title, okAct, okLabel, okId) => `<div class="shead"><button data-act="close">Bekor qilish</button><b>${title}</b>${okAct ? `<button class="ok" data-act="${okAct}" ${okId ? `data-id="${okId}"` : ''}>${okLabel}</button>` : '<span></span>'}</div>`;
+
+const TABS = [['home','Bugun','home'],['tasks','Vazifalar','list'],['habits','Odatlar','check'],['namoz','Namoz','moon'],['focus','Focus','timer']];
+function isDark(){ return inTG ? tg.colorScheme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches; }
+function applyTheme(){
+  const t = S.settings.theme;
+  const base = t === 'auto' ? (isDark() ? 'dark' : 'light') : (t === 'dark' || t === 'navy' || t === 'forest') ? 'dark' : 'light';
+  document.body.dataset.base = base; document.body.dataset.theme = t;
+  try {
+    const bg = getComputedStyle(document.body).getPropertyValue('--bg').trim();
+    if (ver('6.9')) { tg.setHeaderColor(bg); tg.setBackgroundColor(bg); }
+    if (ver('7.10')) tg.setBottomBarColor(bg);
+  } catch(e) {}
+}
+function render(){
+  applyTheme();
+  $('tabs').innerHTML = TABS.map(([k,l,i]) => `<button data-act="tab" data-v="${k}" class="${UI.tab===k?'on':''}">${ic(i)}${l}</button>`).join('');
+  $('view').innerHTML = ({home:vHome, tasks:vTasks, habits:vHabits, namoz:vNamoz, focus:vFocus})[UI.tab]();
+  if (UI.tab === 'focus') paintClock(false);
+}
+const nav = (title, sub, right) => `<div class="nav"><div class="navbar">${right||''}</div><h1>${title}</h1>${sub ? `<div class="sub">${sub}</div>` : ''}</div>`;
+const W = (color, icon, label, val, unit, pct, tab) => `<button class="w" ${tab ? `data-act="tab" data-v="${tab}"` : ''}>
+  <div class="wl" style="color:var(--${color})">${ic(icon)}<span>${label}</span></div>
+  <div class="wv">${val}${unit ? `<small>${unit}</small>` : ''}</div>
+  ${pct != null ? `<div class="bar"><i style="width:${Math.max(0,Math.min(100,pct))}%;background:var(--${color})"></i></div>` : ''}</button>`;
+const bubble = m => `<div class="bubble"><div class="bh"><span class="av">A</span><span class="nm">Abdulhay</span><span>hozir</span></div><div class="m">${m}</div></div>`;
+
+function taskRow(x){
+  const t = today(), late = x.s === 'p' && x.d < t;
+  const meta = [x.tm ? `<span>${x.tm}</span>` : '', late ? `<span class="late">${fmtShort(x.d)} · kechikdi</span>` : '', x.s === 'x' ? '<span>o\'tkazildi</span>' : '', x.n ? `<span>${esc(x.n.slice(0,40))}${x.n.length > 40 ? '…' : ''}</span>` : ''].filter(Boolean);
+  return `<div class="cell ${x.s!=='p'?'done':''}">
+    <button class="chk ${x.s==='d'?'on':''}" data-act="ttog" data-id="${x.id}" aria-label="Bajarildi"></button>
+    <div class="grow" data-act="tedit" data-id="${x.id}">
+      <div class="t1">${x.p === 1 ? `<span class="pri">!!! </span>` : x.p === 2 ? '' : ''}${esc(x.t)}</div>
+      ${meta.length ? `<div class="t2">${meta.join('')}</div>` : ''}
+    </div>${x.top ? `<span class="flag" style="width:20px;height:20px">${ic('flag')}</span>` : ''}</div>`;
+}
+
+/* ---------- Bugun ---------- */
+function vHome(){
+  const t = today(), tt = todayTasks(), done = tt.filter(x => x.s === 'd').length;
+  const top = tt.filter(x => x.top).sort(sortT), topLeft = top.filter(x => x.s !== 'd').length;
+  const dh = dailyH(), hd = dh.filter(h => hdone(t,h.id)).length;
+  const nc = ncount(t), fm = fToday(), st = streakBy(dayOk), np = nextPrayer(), wp = weekPct();
+  let msg;
+  if (!tt.length) msg = say("bugunga reja yo'q. Avval 3 ta asosiy ishni belgilab olaylik.");
+  else if (done === tt.length) msg = say("bugungi reja bajarildi. Endi ertangi rejani tuzib qo'yamiz.");
+  else if (topLeft) msg = say(`bugun ${tt.length} ta vazifa bor. Ulardan <b>${topLeft} tasi asosiy</b> — avval o'shalarni yopamiz.`);
+  else msg = say(`asosiy ishlar yopildi. Qolgan ${tt.length-done} ta vazifani tinch bajaramiz.`);
+  if (nowHM() >= 21*60 && !S.jr[t]) msg += ` Kun yakunlanmoqda — xulosani yozib qo'yamiz.`;
+  return `${nav('Bugun', `<span id="sync" class="sync ${syncSt}"></span>${fmtDate(t)}`, `<button class="nbtn" data-act="settings" aria-label="Sozlamalar">${ic('gear')}</button>`)}
+  ${bubble(msg)}
+  ${np ? `<div class="group" style="margin-top:10px"><button class="cell" data-act="tab" data-v="namoz"><span class="isq" style="background:var(--indigo)">${ic('moon')}</span><span class="grow">Keyingi namoz</span><span class="cv">${NAMOZ[np.i]} · ${np.time}</span>${chev}</button></div>
+  <div class="ft">${np.tomorrow ? 'Ertaga · ' : ''}${fmtLeft(np.left)} qoldi</div>` : ''}
+  <div class="sh">Bugungi holat</div>
+  <div class="wgrid">
+    ${W('blue','list','Vazifalar', done, '/'+tt.length, tt.length ? done/tt.length*100 : 0, 'tasks')}
+    ${W('green','check','Odatlar', hd, '/'+dh.length, dh.length ? hd/dh.length*100 : 0, 'habits')}
+    ${W('indigo','moon','Namoz', nc, '/5', nc/5*100, 'namoz')}
+    ${W('orange','timer','Focus', fm >= 60 ? Math.floor(fm/60)+':'+pad(fm%60) : fm, fm >= 60 ? 'soat' : 'daq', null, 'focus')}
+    ${W('red','flame','Streak', st, 'kun')}
+    ${W('teal','chart','Bu hafta', wp, '%', wp, 'habits')}
+  </div>
+  <div class="sh">3 ta asosiy ish<button data-act="tadd" data-top="1">Qo'shish</button></div>
+  <div class="group ck">${top.length ? top.map(taskRow).join('') : `<div class="empty">Asosiy ish belgilanmagan.<br>Vazifada "Asosiy ish" tugmasini yoqing.</div>`}</div>
+  <div class="sh">Amallar</div>
+  <div class="group ic">
+    <button class="cell" data-act="tadd"><span class="isq" style="background:var(--blue)">${ic('plus')}</span><span class="grow">Yangi vazifa</span>${chev}</button>
+    <button class="cell" data-act="tab" data-v="focus"><span class="isq" style="background:var(--orange)">${ic('timer')}</span><span class="grow">Focus boshlash</span>${chev}</button>
+    <button class="cell" data-act="plan"><span class="isq" style="background:var(--red)">${ic('calendar')}</span><span class="grow">Ertangi reja</span>${chev}</button>
+    <button class="cell" data-act="journal"><span class="isq" style="background:var(--indigo)">${ic('moon')}</span><span class="grow">Kunni yakunlash</span>${S.jr[t] ? '<span class="cv">Yozildi</span>' : ''}${chev}</button>
+  </div>`;
+}
+
+/* ---------- Vazifalar ---------- */
+function vTasks(){
+  const t = today(), tm = addDays(t,1), d = UI.tday;
+  const addRow = `<button class="cell add" data-act="tadd"><span style="width:24px;height:24px">${ic('plus')}</span><span>Yangi vazifa</span></button>`;
+  let body;
+  if (d === 'today') {
+    const all = todayTasks().concat(S.tasks.filter(x => x.d === t && x.s === 'x')).sort(sortT);
+    body = `<div class="group ck" style="margin-top:16px">${all.map(taskRow).join('')}${addRow}</div>`;
+  } else if (d === 'tomorrow') {
+    const all = S.tasks.filter(x => x.d === tm).sort(sortT);
+    body = `<div class="group ck" style="margin-top:16px">${all.map(taskRow).join('')}${addRow}</div>${all.length ? '' : `<div class="ft">Ertangi rejani bugun tuzing: 3 ta asosiy ishdan boshlang.</div>`}`;
+  } else if (d === 'later') {
+    const all = S.tasks.filter(x => x.d > tm && x.s === 'p').sort((a,b) => a.d.localeCompare(b.d) || sortT(a,b));
+    const groups = {}; all.forEach(x => (groups[x.d] = groups[x.d] || []).push(x));
+    body = all.length ? Object.keys(groups).map(k => `<div class="sh">${fmtDate(k)}</div><div class="group ck">${groups[k].map(taskRow).join('')}</div>`).join('') : `<div class="group" style="margin-top:16px"><div class="empty">Kelgusi vazifalar yo'q</div></div>`;
+  } else {
+    const all = S.tasks.filter(x => x.s !== 'p' && x.d >= addDays(t,-14)).sort((a,b) => (b.dn||b.d).localeCompare(a.dn||a.d));
+    body = `<div class="group ck" style="margin-top:16px">${all.length ? all.map(taskRow).join('') : `<div class="empty">Oxirgi 14 kunda bajarilgan vazifa yo'q</div>`}</div>`;
+  }
+  const seg = [['today','Bugun'],['tomorrow','Ertaga'],['later','Kelgusi'],['done','Bajarilgan']];
+  return `${nav('Vazifalar', '', `<button class="nbtn" data-act="tadd" aria-label="Yangi vazifa">${ic('plus')}</button>`)}
+  <div class="seg" style="margin-top:12px">${seg.map(([k,l]) => `<button data-act="tday" data-v="${k}" class="${d===k?'on':''}">${l}</button>`).join('')}</div>
+  ${body}`;
+}
+function taskSheet(id, preset){
+  preset = preset || {};
+  const x = id ? S.tasks.find(t => t.id === id) : {t:'', d:preset.d || today(), tm:'', p:2, top:!!preset.top, n:'', s:'p'};
+  if (!x) return;
+  const t = today(), tm = addDays(t,1), t2 = addDays(t,2);
+  openSheet(`${sheetHead(id ? 'Vazifa' : 'Yangi vazifa', 'tsave', id ? 'Tayyor' : "Qo'shish", id||'')}
+    <div class="group">
+      <div class="cell"><input id="f_t" class="in" placeholder="Nomi" maxlength="140" value="${esc(x.t)}"></div>
+      <div class="cell"><textarea id="f_n" class="in" placeholder="Izoh">${esc(x.n||'')}</textarea></div>
+    </div>
+    <div class="sh">Sana va vaqt</div>
+    <div class="group">
+      <div class="cell"><div class="seg grow" id="f_dseg">
+        <button data-act="fday" data-v="${t}" class="${x.d===t?'on':''}">Bugun</button>
+        <button data-act="fday" data-v="${tm}" class="${x.d===tm?'on':''}">Ertaga</button>
+        <button data-act="fday" data-v="${t2}" class="${x.d===t2?'on':''}">Indinga</button></div></div>
+      <div class="cell"><span class="grow">Sana</span><input type="date" id="f_d" value="${x.d}"></div>
+      <div class="cell"><span class="grow">Vaqt</span><input type="time" id="f_tm" value="${x.tm||''}"></div>
+    </div>
+    <div class="sh">Muhimlik</div>
+    <div class="group">
+      <div class="cell"><div class="seg grow" id="f_p">${[3,2,1].map(p => `<button data-act="fpri" data-v="${p}" class="${x.p==p?'on':''}">${PRI[p][0]}</button>`).join('')}</div></div>
+      <label class="cell"><span class="flag" style="width:22px;height:22px">${ic('flag')}</span><span class="grow">Asosiy ish (Top-3)</span><input type="checkbox" class="sw" id="f_top" ${x.top?'checked':''}></label>
+    </div>
+    <div class="ft">Kuniga eng ko'pi 3 ta asosiy ish — Abdulhay qoidasi.</div>
+    ${id ? `<div class="group" style="margin-top:26px">
+      <button class="cell center" data-act="tmove" data-id="${id}">Ertaga ko'chirish</button>
+      ${x.s==='p' ? `<button class="cell center" data-act="tfocus" data-id="${id}">Focus boshlash</button>` : ''}
+      <button class="cell center" data-act="tskip" data-id="${id}">${x.s==='x' ? 'Qaytarish' : "O'tkazib yuborish"}</button>
+    </div>
+    <div class="group" style="margin-top:20px"><button class="cell danger" data-act="tdel" data-id="${id}">Vazifani o'chirish</button></div>` : ''}`);
+  if (!id) setTimeout(() => $('f_t').focus(), 350);
+}
+function saveTask(id){
+  const title = $('f_t').value.trim();
+  if (!title) { toast('Vazifa nomini yozing'); $('f_t').focus(); return; }
+  const d = $('f_d').value || today();
+  const pOn = document.querySelector('#f_p .on'); const p = pOn ? +pOn.dataset.v : 2;
+  let top = $('f_top').checked;
+  if (top && S.tasks.filter(x => x.top && x.d === d && x.s !== 'x' && x.id !== id).length >= 3) {
+    top = false; toast("Asosiy ishlar 3 tadan oshmasin — oddiy vazifa sifatida saqlandi");
+  }
+  if (id) { Object.assign(S.tasks.find(x => x.id === id), {t:title, d, tm:$('f_tm').value, p, top, n:$('f_n').value.trim()}); }
+  else { S.tasks.push({id:uid(), t:title, d, tm:$('f_tm').value, p, top, n:$('f_n').value.trim(), s:'p', c:Date.now()}); hap('light'); }
+  if (top && d === today() && S.habits.some(h => h.id === 'top3') && !hdone(today(),'top3')
+      && S.tasks.filter(x => x.top && x.d === today()).length >= 3) (S.hlog[today()] = S.hlog[today()] || []).push('top3');
+  closeSheet(); save(); render();
+}
+
+/* ---------- Odatlar ---------- */
+function vHabits(){
+  const t = today(), dh = dailyH(), wh = weeklyH(), hd = dh.filter(h => hdone(t,h.id)).length, ws = weekStart(t), wp = weekPct();
+  const last7 = [...Array(7)].map((_,i) => addDays(t, i-6));
+  const lead = h => UI.hedit ? `<button class="minus" data-act="hdel" data-id="${h.id}" aria-label="O'chirish"></button>` : '';
+  const isq = h => `<span class="isq" style="background:var(--fill);font-size:17px">${esc(h.ic)}</span>`;
+  const drow = h => `<div class="cell">${lead(h)}${isq(h)}
+    <div class="grow"><div class="t1">${esc(h.t)}</div>
+      <div class="t2"><span class="badge">🔥 ${streakBy(d => hdone(d,h.id))} kun</span><span>eng uzun ${bestStreak(h.id)}</span></div>
+      <div class="dots">${last7.map(d => `<button class="dot ${hdone(d,h.id)?'on':''} ${d===t?'today':''}" data-act="hday" data-id="${h.id}" data-d="${d}">${WD2[parse(d).getDay()]}</button>`).join('')}</div>
+    </div>${UI.hedit ? '' : `<button class="chk g ${hdone(t,h.id)?'on':''}" data-act="htog" data-id="${h.id}" aria-label="Bajarildi"></button>`}</div>`;
+  const wrow = h => { const c = weekCount(h.id, ws); return `<div class="cell">${lead(h)}${isq(h)}
+    <div class="grow"><div class="t1">${esc(h.t)}</div>
+      <div class="t2"><span>Bu hafta ${c}/${h.tg}</span>${c >= h.tg ? '<span style="color:var(--green);font-weight:600">bajarildi</span>' : ''}<span class="badge">🔥 ${wStreak(h)} hafta</span></div>
+      <div class="bar"><i style="width:${Math.min(100,c/h.tg*100)}%;background:var(--green)"></i></div>
+    </div>${UI.hedit ? '' : `<button class="chk g ${hdone(t,h.id)?'on':''}" data-act="htog" data-id="${h.id}" aria-label="Bugun bajarildi"></button>`}</div>`; };
+  return `${nav('Odatlar', '', `<button class="nbtn" data-act="hedit" style="font-weight:${UI.hedit?600:400}">${UI.hedit ? 'Tayyor' : 'Tahrirlash'}</button>`)}
+    <div class="wgrid" style="margin-top:12px">
+      ${W('green','check','Bugun', hd, '/'+dh.length, dh.length ? hd/dh.length*100 : 0)}
+      ${W('teal','chart','Bu hafta', wp, '%', wp)}
+    </div>
+    <div class="sh">Kunlik</div>
+    <div class="group ic">${dh.map(drow).join('') || '<div class="empty">Kunlik odat yo\'q</div>'}${UI.hedit ? `<button class="cell add" data-act="hadd" data-k="d">${ic('plus').replace('class="ico ','style="width:22px;height:22px" class="ico ')}Kunlik odat qo'shish</button>` : ''}</div>
+    ${UI.hedit ? '' : `<div class="ft">O'tgan kunni tuzatish uchun kun belgisini bosing.</div>`}
+    <div class="sh">Haftalik</div>
+    <div class="group ic">${wh.map(wrow).join('') || '<div class="empty">Haftalik odat yo\'q</div>'}${UI.hedit ? `<button class="cell add" data-act="hadd" data-k="w">${ic('plus').replace('class="ico ','style="width:22px;height:22px" class="ico ')}Haftalik odat qo'shish</button>` : ''}</div>`;
+}
+function habitSheet(k){
+  openSheet(`${sheetHead('Yangi odat', 'hsave', "Qo'shish")}
+    <div class="group">
+      <div class="cell"><input id="h_ic" class="in" style="width:36px;text-align:center;font-size:22px" value="⭐" maxlength="4"><input id="h_t" class="in" placeholder="Odat nomi" maxlength="60"></div>
+    </div>
+    <div class="sh">Turi</div>
+    <div class="group">
+      <div class="cell"><div class="seg grow" id="h_k"><button data-act="hk" data-v="d" class="${k!=='w'?'on':''}">Kunlik</button><button data-act="hk" data-v="w" class="${k==='w'?'on':''}">Haftalik</button></div></div>
+      <div class="cell" id="h_tgw" style="display:${k==='w'?'flex':'none'}"><span class="grow">Haftasiga <b id="h_tgv">2</b> marta</span>
+        <div class="stepper"><button data-act="hstep" data-d="-1">−</button><button data-act="hstep" data-d="1">+</button></div></div>
+    </div>`);
+  setTimeout(() => $('h_t').focus(), 350);
+}
+
+/* ---------- Namoz ---------- */
+function vNamoz(){
+  const t = today(), np = nextPrayer(), last7 = [...Array(7)].map((_,i) => addDays(t, i-6)), wk = namozWeekPct(), m30 = namozPct(30);
+  const rows = NAMOZ.map((n,i) => `<div class="cell">
+    <div class="grow"><div class="t1">${n}${np && np.i === i && !np.tomorrow ? ' <span style="color:var(--accent);font-size:13px;font-weight:600">· keyingi</span>' : ''}</div></div>
+    <span class="cv" style="font-variant-numeric:tabular-nums">${PT ? PT.t[i] : '—'}</span>
+    <button class="chk g ${ndone(t,i)?'on':''}" data-act="ntog" data-i="${i}" aria-label="${n} o'qildi"></button></div>`).join('');
+  return `${nav('Namoz', `${esc(S.settings.city)}${PT ? ` · quyosh ${PT.sun}` : ''}${PT && PT.src === 'taxminiy' ? ' · <span style="color:var(--orange)">taxminiy</span>' : ''}`)}
+    ${np ? `<div class="hero"><div><div class="k">Keyingi namoz${np.tomorrow ? ' · ertaga' : ''}</div><div class="n">${NAMOZ[np.i]}</div></div>
+      <div><div class="tm">${np.time}</div><div class="lf">${fmtLeft(np.left)} qoldi</div></div></div>` : ''}
+    <div class="sh">Bugun · ${ncount(t)}/5</div>
+    <div class="group">${rows}</div>
+    <div class="sh">Statistika</div>
+    <div class="wgrid">
+      ${W('indigo','chart','Bu hafta', wk, '%', wk)}
+      ${W('teal','chart','30 kun', m30, '%', m30)}
+      ${W('red','flame',"To'liq kunlar", streakBy(d => ncount(d) === 5), 'kun')}
+      ${W('green','check','Bugun', ncount(t), '/5', ncount(t)/5*100)}
+    </div>
+    <div class="sh">Oxirgi 7 kun</div>
+    <div class="group"><div class="ngrid">
+      <div></div>${last7.map(d => `<div class="h ${d===t?'today':''}">${WD2[parse(d).getDay()]}<br>${parse(d).getDate()}</div>`).join('')}
+      ${NAMOZ.map((n,i) => `<div class="nm">${n}</div>${last7.map(d => `<button class="c ${ndone(d,i)?'on':''}" data-act="ncell" data-i="${i}" data-d="${d}" aria-label="${n} ${d}"></button>`).join('')}`).join('')}
+    </div></div>
+    <div class="ft">Katakni bosib o'tgan kunni tuzatish mumkin.${PT && PT.src === 'taxminiy' ? ` islomapi.uz javob bermadi — vaqtlar aladhan.com (MWL, Hanafiy asr) bo'yicha hisoblandi, bir necha daqiqa farq qilishi mumkin. Masjid jadvali bilan solishtiring.` : ''}</div>`;
+}
+
+/* ---------- Focus (Zen Flip Clock) ---------- */
+function vFocus(){
+  const T = S.timer, flen = UI.flen || S.settings.flen, c = clockState();
+  const clock = `<div class="fc"><div class="fcard" id="fcM"></div><div class="fcolon"><i></i><i></i></div><div class="fcard" id="fcS"></div></div>
+    <div class="flab">${esc(c.label)}</div><div class="fprog"><i id="fProg" style="width:${c.pct}%"></i></div>`;
+  const zenBtn = `<button class="pill mid" data-act="zen">${ic('expand')}Zen</button>`;
+  let ctl, below = '';
+  if (T) {
+    ctl = `<div class="rbtns"><button class="rb gray" data-act="fstop">Bekor</button>${zenBtn}
+      ${T.start ? `<button class="rb orange" data-act="fpause">Pauza</button>` : `<button class="rb green" data-act="fresume">Davom</button>`}</div>`;
+  } else {
+    const opts = todayTasks().filter(x => x.s === 'p').sort(sortT);
+    const selId = UI.ftid === 'none' ? '' : (opts.some(x => x.id === UI.ftid) ? UI.ftid : (opts[0] ? opts[0].id : ''));
+    const selT = opts.find(x => x.id === selId);
+    ctl = `<div class="rbtns"><button class="rb gray" disabled>Bekor</button>${zenBtn}<button class="rb green" data-act="fstart">Start</button></div>`;
+    below = `${UI.fdone ? bubble(say(`<b>${UI.fdone} daqiqa</b> fokus yozildi. Endi ${S.settings.blen} daqiqa dam olamiz.`)) + `<div class="group" style="margin-top:10px"><button class="cell center" data-act="fbreak">Tanaffus · ${S.settings.blen} daq</button></div>` : ''}
+      <div class="sh">Sessiya</div>
+      <div class="group">
+        <div class="cell"><div class="seg grow">${[15,25,50,90].map(m => `<button data-act="flen" data-v="${m}" class="${flen===m?'on':''}">${m} daq</button>`).join('')}</div></div>
+        <div class="cell"><span class="grow">Davomiylik</span><span class="cv">${flen} daq</span><div class="stepper"><button data-act="fstep" data-d="-5">−</button><button data-act="fstep" data-d="5">+</button></div></div>
+        <label class="cell sel"><span class="grow">Vazifa</span><span class="cv" style="max-width:55%;overflow:hidden;text-overflow:ellipsis">${selT ? esc(selT.t) : 'Vazifasiz'}</span>${chev}
+          <select id="fs_task"><option value="" ${!selId?'selected':''}>Vazifasiz fokus</option>${opts.map(x => `<option value="${x.id}" ${selId===x.id?'selected':''}>${esc(x.t)}</option>`).join('')}</select></label>
+      </div>
+      <div class="ft">Zen rejimda faqat soat qoladi, ekran o'chmaydi. Vaqt tugaganda ovoz chiqadi va telefon titraydi.</div>`;
+  }
+  const todayS = S.focus.filter(f => f.ts >= dayTs(today())).sort((a,b) => b.ts-a.ts);
+  const wk = {}; S.focus.filter(f => f.ts >= dayTs(weekStart(today()))).forEach(f => { const k = f.t || 'Vazifasiz fokus'; wk[k] = (wk[k]||0) + f.m; });
+  const topT = Object.entries(wk).sort((a,b) => b[1]-a[1])[0];
+  return `${nav('Focus')}${clock}${ctl}${below}
+    <div class="sh">Statistika</div>
+    <div class="wgrid">
+      ${W('orange','timer','Bugun', fmtMin(fToday()))}
+      ${W('purple','chart','Bu hafta', fmtMin(fWeek()))}
+      ${W('indigo','calendar','Bu oy', fmtMin(fMonth()))}
+      ${W('red','flame','Sessiyalar', todayS.length, 'bugun')}
+    </div>
+    ${topT ? `<div class="sh">Bu hafta eng ko'p</div><div class="group"><div class="cell"><span class="grow">${esc(topT[0])}</span><span class="cv">${fmtMin(topT[1])}</span></div></div>` : ''}
+    <div class="sh">Bugungi sessiyalar</div>
+    <div class="group">${todayS.length ? todayS.map(f => { const d = new Date(f.ts); return `<div class="cell"><div class="grow"><div class="t1">${esc(f.t || 'Vazifasiz fokus')}</div><div class="t2">${pad(d.getHours())}:${pad(d.getMinutes())} da tugadi</div></div><span class="cv">${f.m} daq</span></div>`; }).join('') : '<div class="empty">Bugun hali fokus qilinmadi</div>'}</div>`;
+}
+
+/* ---------- Kun xulosasi ---------- */
+function journalSheet(){
+  const t = today(), j = S.jr[t] || {}, tt = todayTasks(), done = tt.filter(x => x.s === 'd').length;
+  const dh = dailyH(), hd = dh.filter(h => hdone(t,h.id)).length;
+  const left = tt.filter(x => x.s === 'p');
+  openSheet(`${sheetHead('Kun xulosasi', 'jsave', 'Saqlash')}
+    <div class="wgrid">${W('blue','list','Vazifalar', done, '/'+tt.length)}${W('orange','timer','Focus', fmtMin(fToday()))}${W('green','check','Odatlar', hd, '/'+dh.length)}${W('indigo','moon','Namoz', ncount(t), '/5')}</div>
+    ${left.length ? `<div class="group" style="margin-top:12px"><button class="cell center" data-act="moveall">Bajarilmagan ${left.length} tasini ertaga ko'chirish</button></div>` : ''}
+    <div class="sh">Kunni qanday o'tkazdim?</div><div class="group"><div class="cell"><textarea id="j_a" class="in">${esc(j.a||'')}</textarea></div></div>
+    <div class="sh">O'zim va ishim uchun foydali nima qildim?</div><div class="group"><div class="cell"><textarea id="j_b" class="in">${esc(j.b||'')}</textarea></div></div>
+    <div class="sh">Kelajagim uchun nima o'rgandim?</div><div class="group"><div class="cell"><textarea id="j_c" class="in">${esc(j.c||'')}</textarea></div></div>`);
+}
+
+/* ---------- Sozlamalar ---------- */
+const THEMES = [['auto','Avto (iOS)'],['light','Yorug\''],['dark','Qorong\'i'],['navy','Deep Navy'],['najot','Najot'],['sand','Warm Sand'],['forest','Forest']];
+const MURS = ["Og'a",'Aka',"Do'stim",'Ustoz','Ism','Neytral'];
+function settingsSheet(){
+  const s = S.settings, th = THEMES.find(x => x[0] === s.theme) || THEMES[0];
+  const selCell = (label, key, opts, cur, shown) => `<label class="cell sel"><span class="grow">${label}</span><span class="cv">${esc(shown)}</span>${chev}
+    <select data-set="${key}">${opts.map(([v,l]) => `<option value="${esc(v)}" ${cur===v?'selected':''}>${esc(l)}</option>`).join('')}</select></label>`;
+  openSheet(`<div class="shead"><span></span><b>Sozlamalar</b><button class="ok" data-act="close">Tayyor</button></div>
+    <div class="sh">Ko'rinish</div>
+    <div class="group">
+      ${selCell('Uslub', 'theme', THEMES, s.theme, th[1])}
+      ${selCell('Murojaat', 'mur', MURS.map(m => [m, m === 'Ism' ? (tgName() || 'Ism bilan') : m]), s.mur, s.mur === 'Ism' ? (tgName() || 'Ism bilan') : s.mur)}
+    </div>
+    <div class="sh">Focus</div>
+    <div class="group">
+      <div class="cell"><span class="grow">Focus · ${s.flen} daq</span><div class="stepper"><button data-act="sstep" data-k="flen" data-d="-5">−</button><button data-act="sstep" data-k="flen" data-d="5">+</button></div></div>
+      <div class="cell"><span class="grow">Tanaffus · ${s.blen} daq</span><div class="stepper"><button data-act="sstep" data-k="blen" data-d="-1">−</button><button data-act="sstep" data-k="blen" data-d="1">+</button></div></div>
+      <label class="cell"><span class="grow">Tugaganda ovoz</span><input type="checkbox" class="sw" data-set="sound" ${s.sound?'checked':''}></label>
+    </div>
+    <div class="sh">Namoz</div>
+    <div class="group">${selCell('Shahar', 'city', Object.keys(CITIES).map(c => [c,c]), s.city, s.city)}</div>
+    <div class="sh">Ma'lumotlar</div>
+    <div class="group">
+      <button class="cell" data-act="export"><span class="grow" style="color:var(--accent)">Zaxira nusxa olish</span></button>
+      <button class="cell" data-act="import"><span class="grow" style="color:var(--accent)">Zaxiradan tiklash</span></button>
+    </div>
+    <div class="ft">${CS ? 'Telegram bulutida saqlanmoqda — boshqa qurilmadan ham ochiladi.' : 'Telegram tashqarisida ochilgan: ma\'lumot faqat shu brauzerda saqlanadi.'}</div>
+    <div class="group" style="margin-top:26px"><button class="cell danger" data-act="reset">Barcha ma'lumotlarni o'chirish</button></div>
+    <div class="ft" style="text-align:center;margin-top:18px">Abdulhay · 1-bosqich</div>`);
+}
+
+/* ================= Hodisalar ================= */
+const A = {
+  tab: el => { UI.tab = el.dataset.v; try { localStorage.setItem('abdulhay_tab', UI.tab); } catch(e) {} hapS(); render(); window.scrollTo(0,0); },
+  close: closeSheet,
+  settings: settingsSheet,
+  tday: el => { UI.tday = el.dataset.v; hapS(); render(); },
+  tadd: el => taskSheet(null, {d: UI.tab === 'tasks' && UI.tday === 'tomorrow' ? addDays(today(),1) : today(), top: el.dataset.top === '1'}),
+  tedit: (el,id) => taskSheet(id),
+  ttog: (el,id) => toggleTask(id),
+  fday: el => { $('f_d').value = el.dataset.v; document.querySelectorAll('#f_dseg button').forEach(b => b.classList.toggle('on', b === el)); hapS(); },
+  fpri: el => { document.querySelectorAll('#f_p button').forEach(b => b.classList.toggle('on', b === el)); hapS(); },
+  tsave: (el,id) => saveTask(id || null),
+  tmove: (el,id) => { const x = S.tasks.find(t => t.id === id); x.d = addDays(today(),1); x.s = 'p'; closeSheet(); save(); render(); toast("Ertaga ko'chirildi"); },
+  tskip: (el,id) => { const x = S.tasks.find(t => t.id === id); x.s = x.s === 'x' ? 'p' : 'x'; closeSheet(); save(); render(); },
+  tdel: async (el,id) => { if (!(await ask("Vazifa o'chirilsinmi?"))) return; S.tasks = S.tasks.filter(t => t.id !== id); closeSheet(); save(); render(); },
+  tfocus: (el,id) => { UI.ftid = id; UI.fdone = null; closeSheet(); A.tab({dataset:{v:'focus'}}); },
+  plan: () => { UI.tday = 'tomorrow'; A.tab({dataset:{v:'tasks'}}); },
+  htog: (el,id) => toggleHabit(id),
+  hday: el => toggleHabit(el.dataset.id, el.dataset.d),
+  hedit: () => { UI.hedit = !UI.hedit; hapS(); render(); },
+  hdel: async (el,id) => { const h = S.habits.find(x => x.id === id); if (!(await ask(`"${h.t}" odati o'chirilsinmi? Tarixi ham yo'qoladi.`))) return; S.habits = S.habits.filter(x => x.id !== id); for (const d in S.hlog) { S.hlog[d] = S.hlog[d].filter(x => x !== id); if (!S.hlog[d].length) delete S.hlog[d]; } save(); render(); },
+  hadd: el => habitSheet(el.dataset.k),
+  hk: el => { document.querySelectorAll('#h_k button').forEach(b => b.classList.toggle('on', b === el)); $('h_tgw').style.display = el.dataset.v === 'w' ? 'flex' : 'none'; hapS(); },
+  hstep: el => { const v = $('h_tgv'); v.textContent = Math.max(1, Math.min(7, +v.textContent + +el.dataset.d)); hapS(); },
+  hsave: () => { const t = $('h_t').value.trim(); if (!t) { toast('Odat nomini yozing'); return; } const k = document.querySelector('#h_k .on').dataset.v; const h = {id:uid(), t, ic:$('h_ic').value.trim() || '⭐', k}; if (k === 'w') h.tg = +$('h_tgv').textContent; S.habits.push(h); closeSheet(); save(); render(); },
+  ntog: el => toggleNamoz(+el.dataset.i),
+  ncell: el => toggleNamoz(+el.dataset.i, el.dataset.d),
+  flen: el => { UI.flen = +el.dataset.v; hapS(); render(); },
+  fstep: el => { UI.flen = Math.max(5, Math.min(180, (UI.flen || S.settings.flen) + +el.dataset.d)); hapS(); render(); },
+  fstart: () => { const sel = $('fs_task'), x = sel && S.tasks.find(t => t.id === sel.value); startTimer('f', UI.flen || S.settings.flen, x ? x.id : '', x ? x.t : ''); },
+  fpause: pauseTimer, fresume: resumeTimer,
+  fstop: async () => { const el = tElapsed(); if (el < 60000 || await ask("Sessiya to'xtatilsinmi? O'tgan vaqt saqlanadi.")) stopTimer(); else paintZen(); },
+  fbreak: () => startTimer('b', S.settings.blen, '', ''),
+  zen: () => enterZen(),
+  zenexit: () => exitZen(),
+  zentap: () => showZenCtl(),
+  journal: journalSheet,
+  moveall: () => { const t = addDays(today(),1); todayTasks().filter(x => x.s === 'p').forEach(x => x.d = t); save(); render(); journalSheet(); toast("Ertaga ko'chirildi"); },
+  jsave: () => { const t = today(); S.jr[t] = {a:$('j_a').value.trim(), b:$('j_b').value.trim(), c:$('j_c').value.trim()}; if (S.habits.some(h => h.id === 'jurnal') && !hdone(t,'jurnal')) (S.hlog[t] = S.hlog[t] || []).push('jurnal'); hapN('success'); closeSheet(); save(); render(); toast(say('xulosa saqlandi. Ertaga yaxshiroq.')); },
+  sstep: el => { const k = el.dataset.k, lim = k === 'flen' ? [5,180] : [1,60]; S.settings[k] = Math.max(lim[0], Math.min(lim[1], S.settings[k] + +el.dataset.d)); UI.flen = null; hapS(); save(); render(); settingsSheet(); },
+  export: async () => { const txt = JSON.stringify(S); try { await navigator.clipboard.writeText(txt); toast('Zaxira nusxa olindi (JSON)'); } catch(e) { openSheet(`${sheetHead('Zaxira nusxa')}<div class="group"><div class="cell"><textarea class="in" style="min-height:260px" readonly>${esc(txt)}</textarea></div></div><div class="ft">Matnni nusxalab xavfsiz joyga saqlang.</div>`); } },
+  import: () => openSheet(`${sheetHead('Tiklash', 'impdo', 'Tiklash')}<div class="group"><div class="cell"><textarea id="imp" class="in" style="min-height:200px" placeholder="JSON zaxira nusxani shu yerga joylang"></textarea></div></div><div class="ft">Hozirgi ma'lumotlar almashtiriladi.</div>`),
+  impdo: async () => { let o; try { o = JSON.parse($('imp').value); if (!o || !Array.isArray(o.tasks)) throw 0; } catch(e) { toast("JSON noto'g'ri"); return; } if (!(await ask("Hozirgi ma'lumotlar almashtirilsinmi?"))) return; S = migrate(o); closeSheet(); save(); render(); toast('Tiklandi'); },
+  reset: async () => { if (!(await ask("Barcha ma'lumotlar (vazifalar, odatlar, namoz, focus) o'chiriladi. Davom etamizmi?"))) return; if (!(await ask("Rostdan ham? Buni qaytarib bo'lmaydi."))) return; S = fresh(); closeSheet(); save(); render(); },
+};
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-act]'); if (!el || el.disabled) return;
+  const f = A[el.dataset.act]; if (f) { if (el.closest('#zen') && el.dataset.act !== 'zentap') { e.stopPropagation(); showZenCtl(); } f(el, el.dataset.id); }
+});
+document.addEventListener('change', e => {
+  const el = e.target;
+  if (el.id === 'fs_task') { UI.ftid = el.value || 'none'; render(); return; }
+  const k = el.dataset && el.dataset.set; if (!k) return;
+  const oc = S.settings.city;
+  S.settings[k] = el.type === 'checkbox' ? el.checked : el.value;
+  hapS(); save(); render(); settingsSheet();
+  if (k === 'city' && oc !== S.settings.city) loadTimes();
+});
+if (tg && tg.onEvent) tg.onEvent('themeChanged', () => { if (S.settings.theme === 'auto') render(); });
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { if (S.settings.theme === 'auto') render(); });
+
+/* ================= Taymer va kun almashishi ================= */
+let lastDay = today();
+setInterval(() => {
+  if (S.timer && S.timer.start && tElapsed() >= S.timer.len*60000) completeTimer();
+  else if (S.timer && (UI.tab === 'focus' || UI.zen)) paintClock(true);
+  if (today() !== lastDay) { lastDay = today(); loadTimes(); render(); }
+}, 200);
+document.addEventListener('visibilitychange', () => { if (!document.hidden && !UI.zen) render(); });
+
+/* ================= Ishga tushirish ================= */
+if (S.timer && S.timer.start && tElapsed() >= S.timer.len*60000) completeTimer();
+if (S.timer) closing(true);
+render();
+loadTimes();
+if (CS) {
+  setSync('load');
+  cloudLoad().then(c => {
+    if (c && (c.u||0) > (S.u||0)) {
+      S = migrate(c);
+      try { localStorage.setItem(LS, JSON.stringify(S)); } catch(e) {}
+      render();
+    } else if (!c || (c.u||0) < (S.u||0)) cloudSave();
+    setSync('ok');
+  }).catch(() => setSync('err'));
+}
+</script>
+</body>
+</html>
