@@ -1,0 +1,70 @@
+{
+  "kitob": "Ilm olish sirlari",
+  "odatlar": ["☀️ Bomdoddan keyin uxlamaslik", "🕌 5 vaqt namoz", "📝 20:40 kunlik xulosa", "🌙 22:00 uyqu"],
+  "kunlar": {
+    "2026-10-26": {
+      "hafta": 1, "kun": 1,
+      "vazifalar": [
+        "📖 «Ilm olish sirlari» — 1–23-bet · 05:35",
+        "🎙 Ovozli xulosa 2–3 daqiqa · 06:10",
+        "🎧 Ilm olish sirlari — Donyor Nasriddinov suhbati · tushlikda"
+      ],
+      "fikr": "Ilm olishga eng yaxshi vaqt — Bomdoddan quyosh chiqquncha. Bugun shu vaqtni kitobga bering."
+    },
+    "2026-10-27": {
+      "hafta": 1, "kun": 2,
+      "vazifalar": [
+        "📖 «Ilm olish sirlari» — 24–46-bet · 05:35",
+        "🎙 Ovozli xulosa 2–3 daqiqa · 06:10",
+        "🎧 Ilm yo'lida qat'iyatli bo'ling — Husayn Buxoriy · tushlikda"
+      ],
+      "fikr": "Ilmsiz amal johillik. Bugungi xulosada bitta amaliy qadamni aniq ayting."
+    },
+    "2026-10-28": {
+      "hafta": 1, "kun": 3,
+      "vazifalar": [
+        "📖 «Ilm olish sirlari» — 47–69-bet · 05:35",
+        "🎙 Ovozli xulosa 2–3 daqiqa · 06:10",
+        "🎧 Dunyoviy bilim olish kerakmi? — Husayn Buxoriy (Millat umidi) · tushlikda"
+      ],
+      "fikr": "Dunyoviy va uxroviy ilm birga: sotuv ilmingiz ham niyat to'g'ri bo'lsa ibodat."
+    },
+    "2026-10-29": {
+      "hafta": 1, "kun": 4,
+      "vazifalar": [
+        "📖 «Ilm olish sirlari» — 70–92-bet · 05:35",
+        "🎙 Ovozli xulosa 2–3 daqiqa · 06:10",
+        "🎧 Ilm o'zi nima-yu, olim o'zi kim? · tushlikda"
+      ],
+      "fikr": "Tushungan odam misol keltira oladi. Bugungi xulosaga o'z hayotingizdan 1 misol qo'shing."
+    },
+    "2026-10-30": {
+      "hafta": 1, "kun": 5,
+      "vazifalar": [
+        "📖 «Ilm olish sirlari» — 93–115-bet · 05:35",
+        "🎙 Ovozli xulosa 2–3 daqiqa · 06:10",
+        "🎧 Eng ta'sirli podkastni qayta tinglang va notesini yangilang"
+      ],
+      "fikr": "Saboq hajmi takrorga yetadigan bo'lsin: kam, lekin davomiy."
+    },
+    "2026-10-31": {
+      "hafta": 1, "kun": 6,
+      "vazifalar": [
+        "📖 «Ilm olish sirlari» — 116–138-bet · 05:35",
+        "🎙 Ovozli xulosa 2–3 daqiqa · 06:10",
+        "🛠 Amaliy qadam: shu hafta o'qiganingizdan 1 tasini bugun qo'llang va natijasini yozing"
+      ],
+      "fikr": "Ilm faqat yozilgan emas, yashalgan bo'lishi kerak."
+    },
+    "2026-11-01": {
+      "hafta": 1, "kun": 7,
+      "vazifalar": [
+        "📖 «Ilm olish sirlari» — 139–161-bet (yoki takror)",
+        "🎙 Ovozli xulosa 2–3 daqiqa",
+        "📊 09:00 haftalik tahlil — Claude'ga \"hafta\" deb yozing",
+        "🔗 2-hafta vazifalari havolasini Claude'ga yuboring"
+      ],
+      "fikr": "Yiqilsangiz, ertasi kuni davom etasiz. Hafta yakuni — hisob-kitob kuni."
+    }
+  }
+}
